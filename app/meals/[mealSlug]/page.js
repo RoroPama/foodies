@@ -19,13 +19,14 @@ export default async function MealDetailsPage({ params }) {
   if (!meal) {
     notFound();
   }
+  const imageUrl = `/api/images/${meal.image.id}`;
 
   meal.instructions = meal.instructions.replace(/\n/g, "<br/>");
   return (
     <>
       <header className={classes.header}>
         <div className={classes.image}>
-          <Image src={meal.image} alt={meal.title} fill />
+          <Image src={imageUrl} alt={meal.title} fill />
         </div>
         <div className={classes.headerText}>
           <h1>{meal.title}</h1>
