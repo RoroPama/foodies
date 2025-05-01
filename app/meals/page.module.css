@@ -1,0 +1,63 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin: 3rem auto;
+  width: 90%;
+  max-width: 75rem;
+  color: #ddd6cb;
+  text-align: center;
+}
+
+.header h1 {
+  font-size: 2rem;
+}
+
+.highlight {
+  background: linear-gradient(90deg, #f9572a, #ff9b05);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cta a {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: linear-gradient(90deg, #f9572a, #ff9b05);
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.cta a:hover,
+.cta a:active {
+  background: linear-gradient(90deg, #fd4715, #f9b241);
+}
+
+.main {
+  width: 90%;
+  max-width: 75rem;
+  margin: 2rem auto;
+}
+
+/* Styles pour la barre de recherche */
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .header {
+    margin: 2rem auto;
+    gap: 1rem;
+  }
+}
