@@ -9,8 +9,8 @@ export const viewport = {
 };
 
 export const metadata = {
-  title: "Details du plate",
-  description: "",
+  title: "Details du plat",
+  description: "Détails et instructions pour préparer ce plat délicieux",
 };
 
 export default async function MealDetailsPage({ params }) {
