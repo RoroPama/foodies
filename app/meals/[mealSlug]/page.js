@@ -3,6 +3,16 @@ import classes from "./page.module.css";
 import { getMeal } from "@/lib/meals";
 import { notFound } from "next/navigation";
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+};
+
+export const metadata = {
+  title: "Details du plate",
+  description: "",
+};
+
 export default async function MealDetailsPage({ params }) {
   const resolvedParams = await params;
   const meal = await getMeal(resolvedParams.mealSlug);

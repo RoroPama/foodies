@@ -6,7 +6,6 @@ export const metadata = {
   title: "NextLevel Food",
   description:
     "Des plats délicieux, partagés par une communauté passionnée de cuisine.",
-  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({ children }) {
