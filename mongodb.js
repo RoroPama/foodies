@@ -80,21 +80,19 @@ export function getMockData(collection) {
 
 export async function connectToDatabase() {
   // ✅ Détection améliorée de l'environnement de build
-  const isBuildTime =
-    !uri ||
-    // process.env.NODE_ENV === "production" &&
-    process.env.VERCEL_ENV === "build" ||
-    process.env.NEXT_PHASE === "phase-production-build";
-
+  const isBuildTime = process.env.NEXT_PHASE === "phase-production-build";
+  //  ||
+  // process.env.VERCEL_ENV === "build";
+  console.log(`etat: ${process.env.NEXT_PHASE} ${process.env.VERCEL_ENV}`);
+  // Séparation claire des responsabilités
   if (isBuildTime) {
-    console.log(
-      "🔄 Environnement de build détecté - Utilisation des données simulées"
-    );
-    return {
-      client: null,
-      db: null,
-      isMockConnection: true,
-    };
+    // Données simulées UNIQUEMENT pendant le build
+    return { client: null, db: null, isMockConnection: true };
+  }
+
+  if (!uri) {
+    // En runtime, si pas d'URI = erreur fatale
+    throw new Error("MONGODB_URI est requis en production");
   }
 
   try {
