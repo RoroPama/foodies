@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectToDatabase, getMockData } from "@/mongodb";
+import { connectToDatabase } from "@/mongodb";
 import { serializeMeal } from "@/lib/meals";
 
 export async function GET(request, { params }) {

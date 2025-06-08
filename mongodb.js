@@ -6,77 +6,77 @@ const dbName = process.env.MONGODB_DB_NAME;
 let cachedClient = null;
 let cachedDb = null;
 
-// Données simulées pour le développement et le build
-// const mockData = {
-//   meals: [
-//     {
-//       _id: "mock-1",
-//       title: "Burger Juteux",
-//       slug: "burger-juteux",
-//       image: {
-//         id: "mock-image-1",
-//         filename: "burger.jpg",
-//         contentType: "image/jpeg",
-//       },
-//       summary: "Un burger délicieux et juteux avec tous les accompagnements.",
-//       instructions:
-//         "Préparez les ingrédients et assemblez votre burger parfait...",
-//       creator: "Chef John",
-//       creator_email: "john@example.com",
-//       createdAt: new Date("2024-01-01"),
-//     },
-//     {
-//       _id: "mock-2",
-//       title: "Curry Épicé",
-//       slug: "curry-epice",
-//       image: {
-//         id: "mock-image-2",
-//         filename: "curry.jpg",
-//         contentType: "image/jpeg",
-//       },
-//       summary: "Un curry épicé et savoureux aux légumes frais.",
-//       instructions: "Faites revenir les épices et ajoutez les légumes...",
-//       creator: "Chef Sarah",
-//       creator_email: "sarah@example.com",
-//       createdAt: new Date("2024-01-02"),
-//     },
-//     {
-//       _id: "mock-3",
-//       title: "Dumplings Maison",
-//       slug: "dumplings-maison",
-//       image: {
-//         id: "mock-image-3",
-//         filename: "dumplings.jpg",
-//         contentType: "image/jpeg",
-//       },
-//       summary: "Des dumplings faits maison avec une farce savoureuse.",
-//       instructions:
-//         "Préparez la pâte et la farce, puis formez les dumplings...",
-//       creator: "Chef Li",
-//       creator_email: "li@example.com",
-//       createdAt: new Date("2024-01-03"),
-//     },
-//     {
-//       _id: "mock-4",
-//       title: "Macaroni au Fromage Classique",
-//       slug: "macaroni-au-fromage-classique",
-//       image: {
-//         id: "mock-image-4",
-//         filename: "macaroni.jpg",
-//         contentType: "image/jpeg",
-//       },
-//       summary: "Le classique mac and cheese, réconfortant et crémeux.",
-//       instructions: "Cuisez les pâtes, préparez la sauce au fromage...",
-//       creator: "Chef Marie",
-//       creator_email: "marie@example.com",
-//       createdAt: new Date("2024-01-04"),
-//     },
-//   ],
-// };
+//Données simulées pour le développement et le build
+const mockData = {
+  meals: [
+    {
+      _id: "mock-1",
+      title: "Burger Juteux",
+      slug: "burger-juteux",
+      image: {
+        id: "mock-image-1",
+        filename: "burger.jpg",
+        contentType: "image/jpeg",
+      },
+      summary: "Un burger délicieux et juteux avec tous les accompagnements.",
+      instructions:
+        "Préparez les ingrédients et assemblez votre burger parfait...",
+      creator: "Chef John",
+      creator_email: "john@example.com",
+      createdAt: new Date("2024-01-01"),
+    },
+    {
+      _id: "mock-2",
+      title: "Curry Épicé",
+      slug: "curry-epice",
+      image: {
+        id: "mock-image-2",
+        filename: "curry.jpg",
+        contentType: "image/jpeg",
+      },
+      summary: "Un curry épicé et savoureux aux légumes frais.",
+      instructions: "Faites revenir les épices et ajoutez les légumes...",
+      creator: "Chef Sarah",
+      creator_email: "sarah@example.com",
+      createdAt: new Date("2024-01-02"),
+    },
+    {
+      _id: "mock-3",
+      title: "Dumplings Maison",
+      slug: "dumplings-maison",
+      image: {
+        id: "mock-image-3",
+        filename: "dumplings.jpg",
+        contentType: "image/jpeg",
+      },
+      summary: "Des dumplings faits maison avec une farce savoureuse.",
+      instructions:
+        "Préparez la pâte et la farce, puis formez les dumplings...",
+      creator: "Chef Li",
+      creator_email: "li@example.com",
+      createdAt: new Date("2024-01-03"),
+    },
+    {
+      _id: "mock-4",
+      title: "Macaroni au Fromage Classique",
+      slug: "macaroni-au-fromage-classique",
+      image: {
+        id: "mock-image-4",
+        filename: "macaroni.jpg",
+        contentType: "image/jpeg",
+      },
+      summary: "Le classique mac and cheese, réconfortant et crémeux.",
+      instructions: "Cuisez les pâtes, préparez la sauce au fromage...",
+      creator: "Chef Marie",
+      creator_email: "marie@example.com",
+      createdAt: new Date("2024-01-04"),
+    },
+  ],
+};
 
-// export function getMockData(collection) {
-//   return mockData[collection] || [];
-// }
+export function getMockData(collection) {
+  return mockData[collection] || [];
+}
 
 export async function connectToDatabase() {
   // ✅ Détection améliorée de l'environnement de build
@@ -189,4 +189,58 @@ export async function getImageFromGridFS(db, fileId) {
     console.error("Erreur lors de la récupération depuis GridFS:", err);
     return null;
   }
+}
+
+export async function storeImageInGridFS(
+  db,
+  imageBuffer,
+  filename,
+  contentType
+) {
+  // Vérifier si c'est une connexion simulée (pendant le build) ou si db est null
+  if (!db) {
+    console.log(
+      "Connexion simulée ou db null, retourne un ID fictif pour GridFS"
+    );
+    return "mock-file-id-" + Date.now();
+  }
+
+  return new Promise((resolve, reject) => {
+    try {
+      const bucket = new GridFSBucket(db);
+
+      // Créer un stream lisible à partir du buffer
+      const readableStream = new Readable();
+      readableStream._read = () => {}; // Implémentation requise pour le Readable stream
+      readableStream.push(imageBuffer);
+      readableStream.push(null);
+
+      // Créer un stream d'upload vers GridFS avec des métadonnées supplémentaires
+      const uploadStream = bucket.openUploadStream(filename, {
+        contentType: contentType,
+        metadata: {
+          uploadDate: new Date(),
+          source: "application-upload",
+        },
+      });
+
+      // Gérer les événements
+      uploadStream.on("error", (err) => {
+        console.error("Erreur lors de l'upload vers GridFS:", err);
+        reject(err);
+      });
+
+      uploadStream.on("finish", function () {
+        console.log(`Fichier ${filename} uploadé avec succès, ID:`, this.id);
+        resolve(this.id); // 'this' fait référence à uploadStream
+      });
+
+      // Pipe le stream de lecture vers le stream d'upload
+      readableStream.pipe(uploadStream);
+    } catch (err) {
+      console.error("Erreur lors de la création du stream GridFS:", err);
+      // Fallback en cas d'erreur
+      resolve("mock-file-id-error-" + Date.now());
+    }
+  });
 }
