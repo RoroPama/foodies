@@ -1,6 +1,6 @@
 import Image from "next/image";
 import classes from "./page.module.css";
-import { getMeal } from "@/lib/meals";
+import { getBaseUrl, getMeal } from "@/lib/meals";
 import { notFound } from "next/navigation";
 
 export const viewport = {
@@ -13,9 +13,26 @@ export const metadata = {
   description: "Détails et instructions pour préparer ce plat délicieux",
 };
 
+async function fetchMeal(slug) {
+  // Utilisation de l'URL absolue pour fonctionner à la fois en développement et en production
+  const baseUrl = getBaseUrl();
+  const response = await fetch(`${baseUrl}/api/meals/${slug}`, {
+    next: {
+      revalidate: 60, // Revalider toutes les 60 secondes
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Impossible de récupérer les repas");
+  }
+
+  return response.json();
+}
+
 export default async function MealDetailsPage({ params }) {
   const resolvedParams = await params;
-  const meal = await getMeal(resolvedParams.mealSlug);
+  console.log(resolvedParams.mealSlug);
+  const meal = await fetchMeal(resolvedParams.mealSlug);
   if (!meal) {
     notFound();
   }
