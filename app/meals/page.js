@@ -5,6 +5,8 @@ import { getMeals } from "@/lib/meals"; // ✅ Utiliser directement la fonction 
 import { Suspense } from "react";
 import LoadingOut from "../components/meals/loading-out";
 
+export const dynamic = "force-dynamic";
+
 // ✅ Fonction corrigée - utilise directement getMeals() au lieu de l'API
 async function fetchMeals() {
   try {
