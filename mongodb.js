@@ -79,7 +79,7 @@ export function getMockData(collection) {
 }
 
 export async function connectToDatabase() {
-  // ✅ Détection améliorée de l'environnement de build
+  // ✅ Détection améliorée de l'environnement de buil
   const isBuildTime = process.env.NEXT_PHASE === "phase-production-build";
   //  ||
   // process.env.VERCEL_ENV === "build";
