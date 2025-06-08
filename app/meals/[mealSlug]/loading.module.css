@@ -1,0 +1,87 @@
+/* Loading.module.css */
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&family=Montserrat:wght@400;700&display=swap");
+
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: radial-gradient(#282c34, #282c34);
+  text-align: center;
+}
+
+.loading h1 {
+  font-size: 2rem;
+  margin: 0;
+  margin-bottom: 1rem;
+  font-weight: 900;
+  color: #262626;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #f9572a, #ffc905);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: cover;
+  background-position: center;
+  font-family: "Montserrat", sans-serif;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.loading p {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #ddd8d8;
+  font-family: "Quicksand", sans-serif;
+}
+
+.dots::after {
+  content: "";
+  animation: dots 1.5s linear infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+@keyframes dots {
+  0%,
+  20% {
+    content: "";
+  }
+  40% {
+    content: ".";
+  }
+  60% {
+    content: "..";
+  }
+  80%,
+  100% {
+    content: "...";
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .loading h1 {
+    font-size: 4rem;
+  }
+
+  .loading p {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading h1 {
+    font-size: 3rem;
+  }
+
+  .loading p {
+    font-size: 1.2rem;
+  }
+}

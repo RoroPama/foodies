@@ -21,9 +21,13 @@ async function fetchMeals() {
   }
 }
 
-export default async function MealPage() {
-  const meals = await fetchMeals();
+async function MealsSection() {
+  // Cette fonction s'exécute de manière asynchrone
+  const meals = await getMeals();
+  return <MealsWithSearch meals={meals} />;
+}
 
+export default async function MealPage() {
   return (
     <>
       <header className={classes.header}>
@@ -41,7 +45,7 @@ export default async function MealPage() {
       </header>
       <main className={classes.main}>
         <Suspense fallback={<LoadingOut />}>
-          <MealsWithSearch meals={meals} />
+          <MealsSection />
         </Suspense>
       </main>
     </>
